@@ -5,6 +5,10 @@
 :- dynamic obok/2.
 :- dynamic na/1.
 :- dynamic na/2.
+:- dynamic pozycja/0.
+:- dynamic pozycja/1.
+:- dynamic pozycja/2.
+:- dynamic pokoj/1.
 
 % pokoje
 pokoj(lazienka).
@@ -110,7 +114,7 @@ znajdujeSieW(X) :- znajdujeSieW(Y,X), write(Y).
 na(X) :- na(X,Y), write(Y).
 pod(X) :- na(Y,X), write(Y).
 obok(X) :- (obok(X,Y);obok(Y,X)), write(Y).
-pomiedzy(X,Y) :- (obok(X,Z);obok(Z,X)), (obok(Y,Z);obok(Z,Y)), na(Z,N), write(Z), nl, write(N), nl.
+pomiedzy(X,Y) :- (obok(X,Z);obok(Z,X)), (obok(Y,Z);obok(Z,Y)), na(Z,N), write(Z), nl, write(N), nl, fail.
 mebleW(X) :- znajdujeSieW(X,Y), write(Y), nl, fail.
 wszystkieMeble :- mebel(X), write(X), nl, fail.
 
@@ -118,3 +122,10 @@ wszystkieMeble :- mebel(X), write(X), nl, fail.
 wyrzucMebel(X) :- retract(mebel(X)), retractall(znajdujeSieW(Y,X)), retractall(obok(X,Y)), retractall(obok(Y,X)), retractall(na(X,Y)), retractall(na(Y,X)).
 kupMebel(X) :- assert(mebel(X)).
 wstawMebel(X,Y) :- assert(znajdujeSieW(X,Y)).
+
+% pozycja poczatkowa
+pozycja(korytarz).
+pozycja :- pozycja(X), write(X).
+
+% ruch
+idz(X,Y) :- pokoj(Y), retract(pozycja(X)), assert(pozycja(Y)).
